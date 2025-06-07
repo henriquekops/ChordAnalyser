@@ -2,7 +2,7 @@
 import cv2 as opencv
 
 # hand detection
-import mediapipe as mp
+import mediapipev1 as mp
 
 TASK = 'task/hand_landmarker.task'
 
@@ -27,10 +27,11 @@ if __name__ == '__main__':
     # image show
     img = opencv.imread('image/hand.jpeg')
     h, w, _ = img.shape
-    for l in result.hand_landmarks:
-        x = int(l[4].x * w)
-        y = int(l[4].y * h)
-        opencv.circle(img, (x, y), 2, (0, 255, 0), thickness=5)
+    for hand_landmarks in result.hand_landmarks:
+        for landmark in hand_landmarks:
+            x = int(landmark.x * w)
+            y = int(landmark.y * h)
+            opencv.circle(img, (x, y), 2, (0, 255, 0), thickness=5)
     opencv.imshow('.', img)
     opencv.waitKey(0)
     opencv.destroyAllWindows()
