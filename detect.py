@@ -19,6 +19,14 @@ class HandDetector:
             max_num_hands=1
         )
 
+    @staticmethod
+    def get_coordinates(landmarks):
+        coordinates = []
+        for hand_landmarks in landmarks:
+            for landmark in hand_landmarks.landmark:
+                coordinates.extend([landmark.x, landmark.y])
+        return coordinates
+
     def draw(self, img, landmarks):
         if landmarks:
             for hand_landmark in landmarks:
@@ -42,8 +50,6 @@ class HandDetector:
         return target_landmarks
 
     def __remover_later(self, frame):
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            return True
         landmarks = self.detect(frame)
         self.draw(frame, landmarks)
         return False

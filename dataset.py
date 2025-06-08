@@ -1,7 +1,7 @@
 import os
 import cv2
 import csv
-from detector import HandDetector
+from detect import HandDetector
 from video import start_capture
 from interface import Interface
 
@@ -35,9 +35,6 @@ class DatasetCreator:
         self.__writer = None
 
     def __create(self, frame, label):
-        if cv2.waitKey(1) == ord('q'):
-            return True
-
         if cv2.waitKey(1) == ord('c'):
             self.__record = True
 
@@ -48,14 +45,12 @@ class DatasetCreator:
             Interface.show_progress_bar(frame, self.__counter, self.__num_frames, (10, 50))
 
             if landmarks:
-                row = []
-                for hand_landmarks in landmarks:
-                    for landmark in hand_landmarks.landmark:
-                        row.extend([landmark.x, landmark.y, landmark.z])
-                row.append(label)
+                row = self.__detector.get_coordinates(landmarks)
 
-                if len(row) != 64:
+                if len(row) != 42:
                     return True
+
+                row.append(label)
 
                 self.__buffer.append(row)
                 self.__counter += 1
