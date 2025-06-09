@@ -7,7 +7,7 @@ import cv2
 import mediapipe as mp
 
 # project
-from src.util.contants import TARGET_LANDMARK_HAND
+from src.util.contants import Core
 from src.util.video import Video
 
 
@@ -52,7 +52,7 @@ class HandDetector:
 
         if landmarks and handedness:
             for hand_landmark, hand_type in zip(landmarks, handedness):
-                if hand_type.classification[0].label == TARGET_LANDMARK_HAND:
+                if hand_type.classification[0].label == Core.TARGET_LANDMARK_HAND:
                     target_landmarks.append(hand_landmark)
 
         return target_landmarks

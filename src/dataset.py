@@ -9,11 +9,7 @@ import csv
 import cv2
 
 # project
-from src.util.contants import (
-    DATASET_DIRECTORY,
-    DATASET_EXTENSION,
-    TARGET_LANDMARK_COUNT
-)
+from src.util.contants import Core, Style
 from src.detect import HandDetector
 from src.util.interface import Interface
 from src.util.io import IO
@@ -34,7 +30,7 @@ class DatasetCreator:
 
     def __write_buffer(self, file_name):
         with open(
-                IO.gen_path(DATASET_DIRECTORY, file_name, DATASET_EXTENSION),
+                IO.gen_path(Core.DATASET_DIRECTORY, file_name, Core.DATASET_EXTENSION),
                 mode='a',
                 newline=''
         ) as file:
@@ -47,7 +43,7 @@ class DatasetCreator:
         self.__writer = None
 
     def __create(self, frame, label):
-        if cv2.waitKey(1) == ord('c'):
+        if cv2.waitKey(1) == ord(Core.CAPTURE_COMMAND):
             self.__record = True
 
         landmarks = self.__detector.detect(frame)
@@ -60,7 +56,7 @@ class DatasetCreator:
             if landmarks:
                 row = self.__detector.get_coordinates(landmarks)
 
-                if len(row) != TARGET_LANDMARK_COUNT:
+                if len(row) != Core.TARGET_LANDMARK_COUNT:
                     return True
 
                 row.append(label)
@@ -73,9 +69,9 @@ class DatasetCreator:
                 self.__reset()
                 return True
         else:
-            Interface.write_text(frame, 'pressione C para iniciar a captura', (10, 50))
+            Interface.write_text(frame, Style.GUI_CAPTURE_MESSAGE, (10, 50))
             return False
 
     def start(self, label):
-        IO.create_directory_if_not_exists(DATASET_DIRECTORY)
+        IO.create_directory_if_not_exists(Core.DATASET_DIRECTORY)
         Video.start_capture(self.__create, label)

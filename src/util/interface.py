@@ -6,6 +6,9 @@
 import cv2
 import numpy as np
 
+# project
+from src.util.contants import Style
+
 
 class Interface:
 
@@ -26,7 +29,7 @@ class Interface:
     @staticmethod
     def show_overlay(img):
         opacity = 0.5
-        overlay = cv2.resize(cv2.imread('assets/overlay.png', cv2.IMREAD_UNCHANGED), (1920, 1080))
+        overlay = cv2.resize(cv2.imread(Style.GUI_ASSET_OVERLAY, cv2.IMREAD_UNCHANGED), (1920, 1080))
 
         b, g, r, a = cv2.split(overlay)
         overlay_rgb = cv2.merge((b, g, r))

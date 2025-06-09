@@ -25,32 +25,24 @@ from PyQt6.QtWidgets import (
 # project
 from src.dataset import DatasetCreator
 from src.analyse import ChordAnalyser
-from src.util.contants import (
-    GUI_BACKGROUND_COLOR,
-    GUI_FOREGROUND_COLOR,
-    GUI_BUTTON_STYLESHEET,
-    ALERT_CAPTURE,
-    ALERT_PREDICT,
-    ALERT_TRAIN_SUCCESS
-)
-
+from src.util.contants import Alerts, Style
 
 class LabelInputDialog(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Label Includer")
-        self.setStyleSheet(f"background-color: {GUI_BACKGROUND_COLOR}; color: {GUI_FOREGROUND_COLOR};")
+        self.setStyleSheet(f"background-color: {Style.GUI_BACKGROUND_COLOR}; color: {Style.GUI_FOREGROUND_COLOR};")
 
         layout = QVBoxLayout()
         self.label = QLabel("Set chord label:")
         self.entry = QLineEdit()
-        self.entry.setStyleSheet(f"background-color: {GUI_BACKGROUND_COLOR}; color: {GUI_FOREGROUND_COLOR};")
+        self.entry.setStyleSheet(f"background-color: {Style.GUI_BACKGROUND_COLOR}; color: {Style.GUI_FOREGROUND_COLOR};")
 
         layout.addWidget(self.label)
         layout.addWidget(self.entry)
 
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
-        buttons.setStyleSheet(GUI_BUTTON_STYLESHEET)
+        buttons.setStyleSheet(Style.GUI_BUTTON_STYLESHEET)
         buttons.accepted.connect(lambda: self.on_accept())
         layout.addWidget(buttons)
 
@@ -75,7 +67,7 @@ class MainWindow(QMainWindow):
         msg.setText(message)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-        msg.setStyleSheet(GUI_BUTTON_STYLESHEET)
+        msg.setStyleSheet(Style.GUI_BUTTON_STYLESHEET)
         msg.exec()
 
     def __init__(self):
@@ -92,7 +84,7 @@ class MainWindow(QMainWindow):
         label = QLabel("Chord Analyser")
         label.setFont(QFont("Menlo", 30))
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        label.setStyleSheet(f"color: {GUI_FOREGROUND_COLOR};")
+        label.setStyleSheet(f"color: {Style.GUI_FOREGROUND_COLOR};")
         layout.addWidget(label)
 
         image_label = QLabel()
@@ -105,18 +97,18 @@ class MainWindow(QMainWindow):
         layout.addSpacing(50)
 
         button_capture = QPushButton("capture")
-        button_capture.setStyleSheet(GUI_BUTTON_STYLESHEET)
+        button_capture.setStyleSheet(Style.GUI_BUTTON_STYLESHEET)
         button_capture.clicked.connect(lambda: LabelInputDialog().exec())
         layout.addWidget(button_capture)
 
         button_train = QPushButton("train")
-        button_train.setStyleSheet(GUI_BUTTON_STYLESHEET)
-        button_train.clicked.connect(lambda: self.runWithAlerts(ChordAnalyser('chordAnalyser').train, ALERT_CAPTURE, ALERT_TRAIN_SUCCESS))
+        button_train.setStyleSheet(Style.GUI_BUTTON_STYLESHEET)
+        button_train.clicked.connect(lambda: self.runWithAlerts(ChordAnalyser('chordAnalyser').train, Alerts.ALERT_CAPTURE, Alerts.ALERT_TRAIN_SUCCESS))
         layout.addWidget(button_train)
 
         button_predict = QPushButton("predict")
-        button_predict.setStyleSheet(GUI_BUTTON_STYLESHEET)
-        button_predict.clicked.connect(lambda: self.runWithAlerts(ChordAnalyser('chordAnalyser').start, ALERT_PREDICT))
+        button_predict.setStyleSheet(Style.GUI_BUTTON_STYLESHEET)
+        button_predict.clicked.connect(lambda: self.runWithAlerts(ChordAnalyser('chordAnalyser').start, Alerts.ALERT_PREDICT))
         layout.addWidget(button_predict)
 
 
@@ -124,6 +116,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     app.setWindowIcon(QIcon("assets/guitar.png"))
-    window.setStyleSheet(f"background-color: {GUI_BACKGROUND_COLOR};")
+    window.setStyleSheet(f"background-color: {Style.GUI_BACKGROUND_COLOR};")
     window.show()
     sys.exit(app.exec())

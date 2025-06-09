@@ -15,13 +15,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split, GridSearchCV
 
 # project
-from src.util.contants import (
-    DATASET_DIRECTORY,
-    DATASET_EXTENSION,
-    MODEL_DIRECTORY,
-    MODEL_EXTENSION,
-    TARGET_LANDMARK_COUNT
-)
+from src.util.contants import Core
 from src.detect import HandDetector
 from src.util.interface import Interface
 from src.util.io import IO
@@ -58,13 +52,13 @@ class ChordAnalyser:
                 n_jobs=1
             )
         elif not self.__classifier and trained:
-            path = IO.gen_path(MODEL_DIRECTORY, self.__name, MODEL_EXTENSION)
+            path = IO.gen_path(Core.MODEL_DIRECTORY, self.__name, Core.MODEL_EXTENSION)
             self.__classifier: RandomForestClassifier = joblib.load(path)
 
     @staticmethod
     def __read_dataset(directory):
         _directory = os.path.join(directory, '')
-        files = glob.glob(_directory + f'*.{DATASET_EXTENSION}')
+        files = glob.glob(_directory + f'*.{Core.DATASET_EXTENSION}')
         dataset = np.vstack([pd.read_csv(file).values for file in files])
         return pd.DataFrame(dataset)
 
@@ -85,8 +79,8 @@ class ChordAnalyser:
         print(f'===Confusion Matrix===\n{confusion_matrix(y_test, y_predict)}')
 
     def __save(self):
-        IO.create_directory_if_not_exists(MODEL_DIRECTORY)
-        path = IO.gen_path(MODEL_DIRECTORY, self.__name, MODEL_EXTENSION)
+        IO.create_directory_if_not_exists(Core.MODEL_DIRECTORY)
+        path = IO.gen_path(Core.MODEL_DIRECTORY, self.__name, Core.MODEL_EXTENSION)
         joblib.dump(self.__classifier.best_estimator_, path)
         print(f'Model saved at {path}')
 
@@ -98,7 +92,7 @@ class ChordAnalyser:
         if landmarks:
             entry = self.__detector.get_coordinates(landmarks)
 
-            if len(entry) != TARGET_LANDMARK_COUNT:
+            if len(entry) != Core.TARGET_LANDMARK_COUNT:
                 return True
             entry = np.array(entry).reshape(1, -1)
             predict = self.__classifier.predict(entry)[0]
@@ -107,10 +101,10 @@ class ChordAnalyser:
             Interface.write_text(frame, f'Chord: {predict}', (0, 50))
 
     def train(self):
-        if not IO.exists(DATASET_DIRECTORY):
+        if not IO.exists(Core.DATASET_DIRECTORY):
             return False
         self.__create_classifier(trained=False)
-        df = self.__read_dataset(DATASET_DIRECTORY)
+        df = self.__read_dataset(Core.DATASET_DIRECTORY)
         bag = self.__split_train_test(df)
         self.__classifier.fit(bag.x_train, bag.y_train)
         y_predict = self.__classifier.predict(bag.x_test)
@@ -119,7 +113,7 @@ class ChordAnalyser:
         return True
 
     def start(self):
-        if not IO.exists(IO.gen_path(MODEL_DIRECTORY, self.__name, MODEL_EXTENSION)):
+        if not IO.exists(IO.gen_path(Core.MODEL_DIRECTORY, self.__name, Core.MODEL_EXTENSION)):
             return False
         self.__create_classifier(trained=True)
         Video.start_capture(self.__analyse)
