@@ -1,7 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Author: Henrique Kops
+
+# external lib
 import cv2
 
 
 class Interface:
+
+    """Wrapper class for interface rendering"""
 
     @staticmethod
     def write_text(img, text, origin):
@@ -11,7 +18,7 @@ class Interface:
             org=origin,
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
             fontScale=0.6,
-            color=(0, 0, 255),
+            color=(0, 0, 0),
             thickness=2
         )
 

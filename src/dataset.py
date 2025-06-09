@@ -1,14 +1,29 @@
-import os
-import cv2
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Author: Henrique Kops
+
+# built-in
 import csv
-from detect import HandDetector
-from video import start_capture
-from interface import Interface
+
+# external lob
+import cv2
+
+# project
+from src.util.contants import (
+    DATASET_DIRECTORY,
+    DATASET_EXTENSION,
+    TARGET_LANDMARK_COUNT
+)
+from src.detect import HandDetector
+from src.util.interface import Interface
+from src.util.io import IO
+from src.util.video import Video
 
 
 class DatasetCreator:
 
-    __DIRECTORY = 'dataset'
+    """Hand landmark dataset creator"""
+
     __detector = HandDetector()
 
     def __init__(self, num_frames):
@@ -17,15 +32,12 @@ class DatasetCreator:
         self.__counter = 0
         self.__buffer = []
 
-    def __gen_path(self, file_name):
-        return f'{self.__DIRECTORY}/{file_name}.csv'
-
-    def __create_directory_if_not_exists(self):
-        if not os.path.exists(self.__DIRECTORY):
-            os.makedirs(self.__DIRECTORY)
-
     def __write_buffer(self, file_name):
-        with open(self.__gen_path(file_name), mode='a', newline='') as file:
+        with open(
+                IO.gen_path(DATASET_DIRECTORY, file_name, DATASET_EXTENSION),
+                mode='a',
+                newline=''
+        ) as file:
             writer = csv.writer(file)
             writer.writerows(self.__buffer)
 
@@ -47,7 +59,7 @@ class DatasetCreator:
             if landmarks:
                 row = self.__detector.get_coordinates(landmarks)
 
-                if len(row) != 42:
+                if len(row) != TARGET_LANDMARK_COUNT:
                     return True
 
                 row.append(label)
@@ -63,7 +75,6 @@ class DatasetCreator:
             Interface.write_text(frame, 'pressione C para iniciar a captura', (10, 50))
             return False
 
-    def start(self):
-        label = input('label: ')
-        self.__create_directory_if_not_exists()
-        start_capture(self.__create, label)
+    def start(self, label):
+        IO.create_directory_if_not_exists(DATASET_DIRECTORY)
+        Video.start_capture(self.__create, label)

@@ -1,11 +1,19 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Author: Henrique Kops
+
+# external lib
 import cv2
 import mediapipe as mp
-from video import start_capture
+
+# project
+from src.util.contants import TARGET_LANDMARK_HAND
+from src.util.video import Video
 
 
 class HandDetector:
 
-    __TARGET = 'Right'
+    """Deep learning hand landmark detector"""
 
     def __init__(self):
         self.__mp_draw = mp.solutions.drawing_utils
@@ -44,7 +52,7 @@ class HandDetector:
 
         if landmarks and handedness:
             for hand_landmark, hand_type in zip(landmarks, handedness):
-                if hand_type.classification[0].label == self.__TARGET:
+                if hand_type.classification[0].label == TARGET_LANDMARK_HAND:
                     target_landmarks.append(hand_landmark)
 
         return target_landmarks
@@ -55,4 +63,4 @@ class HandDetector:
         return False
 
     def start(self):
-        start_capture(self.__remover_later)
+        Video.start_capture(self.__remover_later)
