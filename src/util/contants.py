@@ -22,3 +22,7 @@ MODEL_DIRECTORY = 'model'
 MODEL_EXTENSION = 'pkl'
 TARGET_LANDMARK_HAND = 'Right'
 TARGET_LANDMARK_COUNT = 42
+ALERT_CAPTURE = 'Please capture before training!'
+ALERT_PREDICT = 'Please train before predicting!'
+ALERT_TRAIN_SUCCESS = 'Training completed!'
+

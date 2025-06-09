@@ -56,11 +56,3 @@ class HandDetector:
                     target_landmarks.append(hand_landmark)
 
         return target_landmarks
-
-    def __remover_later(self, frame):
-        landmarks = self.detect(frame)
-        self.draw(frame, landmarks)
-        return False
-
-    def start(self):
-        Video.start_capture(self.__remover_later)

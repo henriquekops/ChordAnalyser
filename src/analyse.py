@@ -107,6 +107,8 @@ class ChordAnalyser:
             Interface.write_text(frame, f'Chord: {predict}', (0, 50))
 
     def train(self):
+        if not IO.exists(DATASET_DIRECTORY):
+            return False
         self.__create_classifier(trained=False)
         df = self.__read_dataset(DATASET_DIRECTORY)
         bag = self.__split_train_test(df)
@@ -114,7 +116,11 @@ class ChordAnalyser:
         y_predict = self.__classifier.predict(bag.x_test)
         self.__show_metrics(bag.y_test, y_predict)
         self.__save()
+        return True
 
     def start(self):
+        if not IO.exists(IO.gen_path(MODEL_DIRECTORY, self.__name, MODEL_EXTENSION)):
+            return False
         self.__create_classifier(trained=True)
         Video.start_capture(self.__analyse)
+        return True

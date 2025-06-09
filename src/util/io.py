@@ -11,6 +11,10 @@ class IO:
     """Wrapper class for OS filesystem interaction"""
 
     @staticmethod
+    def exists(path):
+        return os.path.exists(path)
+
+    @staticmethod
     def create_directory_if_not_exists(path):
         if not os.path.exists(path):
             os.makedirs(path)
