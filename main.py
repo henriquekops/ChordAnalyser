@@ -8,7 +8,7 @@ import multiprocessing
 
 # external lib
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QIcon
+from PyQt6.QtGui import QFont, QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -94,6 +94,13 @@ class MainWindow(QMainWindow):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         label.setStyleSheet(f"color: {GUI_FOREGROUND_COLOR};")
         layout.addWidget(label)
+
+        image_label = QLabel()
+        pixmap = QPixmap("assets/chords.png")
+        pixmap = pixmap.scaledToWidth(150, Qt.TransformationMode.SmoothTransformation)
+        image_label.setPixmap(pixmap)
+        image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(image_label)
 
         layout.addSpacing(50)
 

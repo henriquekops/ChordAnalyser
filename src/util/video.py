@@ -16,6 +16,9 @@ class Video:
     @staticmethod
     def start_capture(func, *params):
         video = cv2.VideoCapture(0)
+        video.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        video.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        cv2.namedWindow("Hand Detection", cv2.WINDOW_AUTOSIZE)
         while video.isOpened():
             if cv2.waitKey(1) == ord('q'):
                 break
