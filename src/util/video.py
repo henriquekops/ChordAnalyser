@@ -5,6 +5,9 @@
 # external lib
 import cv2
 
+# project
+from src.util.interface import Interface
+
 
 class Video:
 
@@ -19,6 +22,7 @@ class Video:
             success, frame = video.read()
             if not success or func(frame, *params):
                 break
+            Interface.write_text(frame, 'Press Q to quit', (10, 1000), (0, 0, 255))
             cv2.imshow("Hand Detection", frame)
         video.release()
         cv2.destroyAllWindows()

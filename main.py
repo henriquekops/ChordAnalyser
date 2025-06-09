@@ -4,6 +4,7 @@
 
 # built-in
 import sys
+import multiprocessing
 
 # external lib
 from PyQt6.QtGui import QFont
@@ -48,8 +49,7 @@ class LabelInputDialog(QDialog):
         self.setLayout(layout)
 
     def on_accept(self):
-        print(self.entry.text())
-        # DatasetCreator(100).start(self.entry.text())  # descomente se quiser usar
+        multiprocessing.Process(target=DatasetCreator(100).start, args=(self.entry.text(),)).start()
         self.accept()
 
 
