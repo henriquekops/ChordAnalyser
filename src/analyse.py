@@ -87,7 +87,6 @@ class ChordAnalyser:
     def __analyse(self, frame):
         predict = ''
         landmarks = self.__detector.detect(frame)
-        self.__detector.draw(frame, landmarks)
 
         x = 0
         y = 0
@@ -108,7 +107,7 @@ class ChordAnalyser:
             predict = self.__classifier.predict(entry)[0]
 
         if predict:
-            Interface.write_text(frame, predict, (x+200, y-300), color=(0, 255, 0), size=2, thickness=4)
+            Interface.write_text(frame, predict, (x+200, y-300), color=(0, 255, 0), size=2, thickness=6)
 
     def train(self):
         if not IO.exists(Core.DATASET_DIRECTORY):
