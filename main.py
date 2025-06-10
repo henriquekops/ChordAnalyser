@@ -27,6 +27,7 @@ from src.dataset import DatasetCreator
 from src.analyse import ChordAnalyser
 from src.util.contants import Alerts, Style
 
+
 class LabelInputDialog(QDialog):
     def __init__(self):
         super().__init__()

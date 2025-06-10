@@ -89,16 +89,26 @@ class ChordAnalyser:
         landmarks = self.__detector.detect(frame)
         self.__detector.draw(frame, landmarks)
 
+        x = 0
+        y = 0
+
         if landmarks:
+            h, w, _ = frame.shape
+
+            landmark = landmarks[0].landmark[0]
+            x = int(landmark.x * w)
+            y = int(landmark.y * h)
+
             entry = self.__detector.get_coordinates(landmarks)
 
             if len(entry) != Core.TARGET_LANDMARK_COUNT:
                 return True
+
             entry = np.array(entry).reshape(1, -1)
             predict = self.__classifier.predict(entry)[0]
 
         if predict:
-            Interface.write_text(frame, f'Chord: {predict}', (0, 50))
+            Interface.write_text(frame, predict, (x+200, y-300), color=(0, 255, 0), size=2, thickness=4)
 
     def train(self):
         if not IO.exists(Core.DATASET_DIRECTORY):

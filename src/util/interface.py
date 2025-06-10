@@ -15,15 +15,15 @@ class Interface:
     """Wrapper class for interface rendering"""
 
     @staticmethod
-    def write_text(img, text, origin, color=(0, 0, 0)):
+    def write_text(img, text, origin, color=(0, 0, 0), size=1, thickness=2):
         cv2.putText(
             img,
             text=text,
             org=origin,
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1,
+            fontScale=size,
             color=color,
-            thickness=2
+            thickness=thickness
         )
 
     @staticmethod
