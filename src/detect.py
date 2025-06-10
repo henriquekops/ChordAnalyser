@@ -8,7 +8,6 @@ import mediapipe as mp
 
 # project
 from src.util.contants import Core
-from src.util.video import Video
 
 
 class HandDetector:
