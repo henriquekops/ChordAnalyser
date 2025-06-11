@@ -12,7 +12,10 @@ class IO:
 
     @staticmethod
     def exists(path):
-        return os.path.exists(path)
+        if os.path.isdir(path):
+            return os.path.exists(path) and os.listdir(path)
+        else:
+            return os.path.exists(path)
 
     @staticmethod
     def create_directory_if_not_exists(path):

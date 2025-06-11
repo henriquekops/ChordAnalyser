@@ -9,9 +9,9 @@ import csv
 import cv2
 
 # project
-from src.util.contants import Core, Style
-from src.detect import HandDetector
-from src.util.interface import Interface
+from src.detector import HandDetector
+from src.ui.hud import Interface
+from src.util.config import Core, Style
 from src.util.io import IO
 from src.util.video import Video
 
@@ -22,15 +22,14 @@ class DatasetCreator:
 
     __detector = HandDetector()
 
-    def __init__(self, num_frames):
-        self.__num_frames = num_frames
+    def __init__(self):
         self.__record = False
         self.__counter = 0
         self.__buffer = []
 
     def __write_buffer(self, file_name):
         with open(
-                IO.gen_path(Core.DATASET_DIRECTORY, file_name, Core.DATASET_EXTENSION),
+                IO.gen_path(Core.IO.DATASET_DIRECTORY, file_name, Core.IO.DATASET_EXTENSION),
                 mode='a',
                 newline=''
         ) as file:
@@ -43,7 +42,7 @@ class DatasetCreator:
         self.__writer = None
 
     def __create(self, frame, label):
-        if cv2.waitKey(1) == ord(Core.CAPTURE_COMMAND):
+        if cv2.waitKey(1) == ord(Core.Command.CAPTURE_COMMAND):
             self.__record = True
 
         landmarks = self.__detector.detect(frame)
@@ -51,12 +50,12 @@ class DatasetCreator:
         Interface.show_overlay(frame)
 
         if self.__record:
-            Interface.show_progress_bar(frame, self.__counter, self.__num_frames, (10, 50))
+            Interface.show_progress_bar(frame, self.__counter, Core.Dataset.TARGET_FRAME_COUNT, (10, 50))
 
             if landmarks:
                 row = self.__detector.get_coordinates(landmarks)
 
-                if len(row) != Core.TARGET_LANDMARK_COUNT:
+                if len(row) != Core.Landmark.TARGET_LANDMARK_COUNT:
                     return True
 
                 row.append(label)
@@ -64,14 +63,14 @@ class DatasetCreator:
                 self.__buffer.append(row)
                 self.__counter += 1
 
-            if self.__counter == self.__num_frames:
+            if self.__counter == Core.Dataset.TARGET_FRAME_COUNT:
                 self.__write_buffer(label)
                 self.__reset()
                 return True
         else:
-            Interface.write_text(frame, Style.GUI_CAPTURE_MESSAGE, (10, 50))
+            Interface.write_text(frame, Style.Window.WIN_CAPTURE_MESSAGE, (10, 50))
             return False
 
     def start(self, label):
-        IO.create_directory_if_not_exists(Core.DATASET_DIRECTORY)
+        IO.create_directory_if_not_exists(Core.IO.DATASET_DIRECTORY)
         Video.start_capture(self.__create, label)

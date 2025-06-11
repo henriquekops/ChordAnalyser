@@ -7,7 +7,7 @@ import cv2
 import mediapipe as mp
 
 # project
-from src.util.contants import Core
+from src.util.config import Core
 
 
 class HandDetector:
@@ -29,9 +29,11 @@ class HandDetector:
     @staticmethod
     def get_coordinates(landmarks):
         coordinates = []
+
         for hand_landmarks in landmarks:
             for landmark in hand_landmarks.landmark:
                 coordinates.extend([landmark.x, landmark.y])
+
         return coordinates
 
     def draw(self, img, landmarks):
@@ -44,6 +46,7 @@ class HandDetector:
             self.__start_detector()
 
         detection = self.__detector.process(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
         landmarks = detection.multi_hand_landmarks
         handedness = detection.multi_handedness
 
@@ -51,7 +54,7 @@ class HandDetector:
 
         if landmarks and handedness:
             for hand_landmark, hand_type in zip(landmarks, handedness):
-                if hand_type.classification[0].label == Core.TARGET_LANDMARK_HAND:
+                if hand_type.classification[0].label == Core.Landmark.TARGET_LANDMARK_HAND:
                     target_landmarks.append(hand_landmark)
 
         return target_landmarks

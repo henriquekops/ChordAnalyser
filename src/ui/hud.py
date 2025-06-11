@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 # project
-from src.util.contants import Style
+from src.util.config import Style
 
 
 class Interface:
@@ -15,7 +15,7 @@ class Interface:
     """Wrapper class for interface rendering"""
 
     @staticmethod
-    def write_text(img, text, origin, color=(0, 0, 0), size=1, thickness=2):
+    def write_text(img, text, origin, color=(0, 0, 0), size=1, thickness=3):
         cv2.putText(
             img,
             text=text,
@@ -29,7 +29,7 @@ class Interface:
     @staticmethod
     def show_overlay(img):
         opacity = 0.5
-        overlay = cv2.resize(cv2.imread(Style.GUI_ASSET_OVERLAY, cv2.IMREAD_UNCHANGED), (1920, 1080))
+        overlay = cv2.resize(cv2.imread(Style.Window.WIN_ASSET_OVERLAY, cv2.IMREAD_UNCHANGED), (1920, 1080))
 
         b, g, r, a = cv2.split(overlay)
         overlay_rgb = cv2.merge((b, g, r))
