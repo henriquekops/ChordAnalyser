@@ -37,6 +37,7 @@ class Style:
         GUI_BUTTON_TRAIN = 'train'
         GUI_BUTTON_PREDICT = 'predict'
         GUI_BUTTON_CONF = 'configuration'
+        GUI_LABEL_TEXT = 'Set chord label:'
 
     class Window:
         WIN_WIDTH = 300
@@ -50,8 +51,8 @@ class Style:
         WIN_CAPTURE_MESSAGE = 'Press C to start capture'
         WIN_QUIT_MESSAGE = 'Press Q to quit'
         WIN_ASSET_OVERLAY = 'assets/overlay.png'
-        WIN_ASSET_ICON = 'assets/guitar.png'
-        WIN_ASSET_BANNER = 'assets/chords.png'
+        WIN_ASSET_ICON = 'assets/icon.png'
+        WIN_ASSET_BANNER = 'assets/banner.png'
 
     class Sheet:
         BUTTON_STYLESHEET = '''

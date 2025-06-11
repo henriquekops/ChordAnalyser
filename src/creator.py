@@ -47,7 +47,6 @@ class DatasetCreator:
 
         landmarks = self.__detector.detect(frame)
         self.__detector.draw(frame, landmarks)
-        Interface.show_overlay(frame)
 
         if self.__record:
             Interface.show_progress_bar(frame, self.__counter, Core.Dataset.TARGET_FRAME_COUNT, (10, 50))

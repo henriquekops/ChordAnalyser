@@ -21,8 +21,8 @@ from PyQt6.QtWidgets import (
 )
 
 # project
-from src.creator import DatasetCreator
 from src.analyser import ChordAnalyser
+from src.creator import DatasetCreator
 from src.util.config import Alert, Style
 
 
@@ -34,7 +34,7 @@ class LabelInputDialog(QDialog):
         self.setStyleSheet(f"{Style.Gui.GUI_BACKGROUND_COLOR} {Style.Gui.GUI_FOREGROUND_COLOR}")
 
         layout = QVBoxLayout()
-        self.label = QLabel("Set chord label:")
+        self.label = QLabel(Style.Gui.GUI_LABEL_TEXT)
         self.entry = QLineEdit()
         self.entry.setStyleSheet(f"{Style.Gui.GUI_BACKGROUND_COLOR} {Style.Gui.GUI_FOREGROUND_COLOR}")
 
