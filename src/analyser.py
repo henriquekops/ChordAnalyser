@@ -61,7 +61,7 @@ class ChordAnalyser:
             self.__classifier = GridSearchCV(
                 estimator=RandomForestClassifier(random_state=42),
                 param_grid={
-                    'n_estimators': [50, 100],
+                    'n_estimators': [100, 200],
                     'max_depth': [None, 20, 10]
                 },
                 cv=5,
