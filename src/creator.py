@@ -67,7 +67,12 @@ class DatasetCreator:
                 self.__reset()
                 return True
         else:
-            Interface.write_text(frame, Style.Window.WIN_CAPTURE_MESSAGE, (10, 50))
+            Interface.write_text(
+                img=frame,
+                text=Style.Window.WIN_CAPTURE_MESSAGE,
+                origin=(10, 50),
+                color=(0, 255, 0)
+            )
             return False
 
     def start(self, label):

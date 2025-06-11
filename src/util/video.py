@@ -36,7 +36,7 @@ class Video:
                 img=frame,
                 text=Style.Window.WIN_QUIT_MESSAGE,
                 origin=(10, 1000),
-                color=(0, 0, 0)
+                color=(0, 0, 255)
             )
             cv2.imshow(Style.Window.WIN_PROJ_NAME, frame)
 
