@@ -17,6 +17,8 @@ class Core:
     class Landmark:
         TARGET_LANDMARK_COUNT = 42
         TARGET_LANDMARK_HAND = 'Right'
+        CLASSIFIER = 'RF'
+        NO_CLASSIFIER_ERROR = 'No such classifier: '
 
     class Dataset:
         TARGET_FRAME_COUNT = 1000

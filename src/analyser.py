@@ -13,6 +13,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
 
 # project
 from src.detector import HandDetector
@@ -39,12 +40,28 @@ class ChordAnalyser:
         self.__classifier = None
         self.__path = IO.gen_path(Core.IO.MODEL_DIRECTORY, Core.IO.MODEL_NAME, Core.IO.MODEL_EXTENSION)
 
-    def __get_classifier(self, trained):
+    def __get_knn_classifier(self, trained):
+        if not self.__classifier and not trained:
+            self.__classifier = GridSearchCV(
+                estimator=KNeighborsClassifier(),
+                param_grid={
+                    'n_neighbors': [3, 5],
+                    'weights': ['uniform', 'distance'],
+                    'metric': ['euclidean', 'manhattan']
+                },
+                cv=5,
+                scoring='accuracy',
+                n_jobs=1
+            )
+        elif not self.__classifier and trained:
+            self.__classifier: KNeighborsClassifier = joblib.load(self.__path)
+
+    def __get_rf_classifier(self, trained):
         if not self.__classifier and not trained:
             self.__classifier = GridSearchCV(
                 estimator=RandomForestClassifier(random_state=42),
                 param_grid={
-                    'n_estimators': [100, 200],
+                    'n_estimators': [50, 100],
                     'max_depth': [None, 20, 10]
                 },
                 cv=5,
@@ -53,6 +70,14 @@ class ChordAnalyser:
             )
         elif not self.__classifier and trained:
             self.__classifier: RandomForestClassifier = joblib.load(self.__path)
+
+    def __get_classifier(self, trained):
+        if Core.Landmark.CLASSIFIER == 'KNN':
+            return self.__get_knn_classifier(trained)
+        elif Core.Landmark.CLASSIFIER == 'RF':
+            return self.__get_rf_classifier(trained)
+        else:
+            raise ValueError(Core.Landmark.NO_CLASSIFIER_ERROR + Core.Landmark.CLASSIFIER)
 
     @staticmethod
     def __read_dataset(directory):
